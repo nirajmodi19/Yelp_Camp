@@ -1,17 +1,30 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-var campgrounds = [
-	{name: 'aaa', image: "http://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg"},
-	{name: 'bbb', image: "https://farm4.staticflickr.com/3823/9229572323_03aabc6e59.jpg"},
-	{name: 'ccc', image: "https://farm1.staticflickr.com/63/227641826_f7c50e1f43.jpg"},
-	{name: 'aaa', image: "http://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg"},
-	{name: 'bbb', image: "https://farm4.staticflickr.com/3823/9229572323_03aabc6e59.jpg"},
-	{name: 'ccc', image: "https://farm1.staticflickr.com/63/227641826_f7c50e1f43.jpg"},
-	{name: 'aaa', image: "http://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg"},
-	{name: 'bbb', image: "https://farm4.staticflickr.com/3823/9229572323_03aabc6e59.jpg"},
-	{name: 'ccc', image: "https://farm1.staticflickr.com/63/227641826_f7c50e1f43.jpg"}
-	];
+mongoose.connect('mongodb://localhost/yelp_camp');
+
+//SCHEMA SETUP
+var campgroundSchema = new mongoose.Schema({
+	name: String,
+	image: String,
+	description: String
+});
+
+var Campground = mongoose.model("Campground", campgroundSchema);
+
+// Campground.create({
+// 	name: 'aaa',
+// 	image: "http://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg",
+// 	description: "Hey I am learning node js"
+// }, (err, data) => {
+// 	if (err) {
+// 		console.log('Something went wrong');
+// 		console.log(err);
+// 	} else {
+// 		console.log(data);
+// 	}
+// })
 
 var app = express();
 
@@ -23,21 +36,44 @@ app.get('/', (req, res) => {
 });
 
 app.get('/campgrounds', (req, res) => {
-	
-	res.render('campgrounds',{campgrounds});
+	Campground.find({}, (err, campgrounds) => {
+		if(err) {
+			console.log(err);
+		} else {	
+			res.render('index', {campgrounds})
+		}
+	});
+	// res.render('campgrounds',{campgrounds});
 });
 
 app.post('/campgrounds', (req, res) => {
 	var name = req.body.name;
 	var image = req.body.image;
-	var newCampground = {name: name, image: image};
-	campgrounds.push(newCampground);
-	res.redirect('/campgrounds'); 
+	var description = req.body.description;
+	var newCampground = {name, image, description};
+	Campground.create(newCampground, (err, data) => {
+		if (err) {
+			console.log(err);
+		} else {
+			res.redirect('/campgrounds'); 
+		}
+	});
+	
 
 });
 
 app.get('/campgrounds/new', (req, res) => {
 	res.render('new.ejs');
+});
+
+app.get('/campgrounds/:id', (req, res) => {
+	Campground.findById(req.params.id, (err, data) => {
+		if (err) {
+
+		}else {
+			res.render('show', {data});
+		}
+	});
 });
 
 app.listen(process.env.PORT||3000, () => {
