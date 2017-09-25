@@ -42,10 +42,10 @@ var User = mongoose.model('User',userSchema);
 
 //populate
 
-// User.findOne({email: 'niraj@gmail.com'}).populate("posts").exec((err, user) => {
-// 	if(err) {
-// 		console.log(err);
-// 	} else {
-// 		console.log(user);
-// 	}
-// });
+User.findOne({email: 'niraj@gmail.com'}).populate("posts").exec((err, user) => {
+	if(err) {
+		console.log(err);
+	} else {
+		console.log(user);
+	}
+});
