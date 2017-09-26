@@ -20,7 +20,7 @@ const indexRoutes = require('./routes/index');
 mongoose.connect('mongodb://localhost/yelp_camp', {useMongoClient: true});
 
 //Seed DataBase for testing 
-seedDB();
+//seedDB();
 
 var app = express();
 
