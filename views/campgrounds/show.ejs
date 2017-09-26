@@ -1,4 +1,4 @@
-<% include partials/header %>
+<% include ../partials/header %>
  
 <h1><p><%= data.name %></p></h1>
 <img src="<%= data.image %>">
@@ -8,4 +8,7 @@
 	<p><strong><%= comment.author %></strong> - <%= comment.text %></p>
 <% }) %>
 
-<% include partials/footer %>
+<p>
+	<a class="btn btn-primary" href="/campgrounds/<%= data._id %>/comments/new">Add a new Comment</a>
+
+<% include ../partials/footer %>
