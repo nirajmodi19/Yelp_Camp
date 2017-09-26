@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-var {Campground} = require('./models/campground.js');
-var {Comment} = require('./models/comment.js');
+var Campground = require('./models/campground.js');
+var Comment = require('./models/comment.js');
 
 var data = [
 	{
@@ -48,4 +48,4 @@ function seedDB() {
 	});
 }
 
-module.exports = {seedDB};
+module.exports = seedDB;
