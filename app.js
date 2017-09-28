@@ -10,6 +10,7 @@ const Campground = require('./models/campground.js');
 const seedDB = require('./seed.js');
 const Comment = require('./models/comment');
 const User = require('./models/user');
+const methodOverride = require('method-override');
 
 //Requiring Routes
 const commentRoutes = require('./routes/comments');
@@ -27,6 +28,7 @@ var app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
+app.use(methodOverride("_method"));
 app.use(require("express-session")({
 	secret: "I am loving node",
 	resave: false,
